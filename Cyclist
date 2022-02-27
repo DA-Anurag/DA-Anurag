@@ -1,0 +1,123 @@
+SELECT *
+FROM `202101-divvy-tripdata`
+LIMIT 10
+
+-- Deleting rows having empty values in start_station_name and end_station_name
+DELETE FROM `202101-divvy-tripdata`
+WHERE end_station_name = "" OR start_station_name = ""
+
+DELETE FROM february
+WHERE end_station_name = "" OR start_station_name = ""
+
+DELETE FROM march
+WHERE end_station_name = "" OR start_station_name = ""
+
+DELETE FROM april
+WHERE end_station_name = "" OR start_station_name = ""
+
+DELETE FROM may
+WHERE end_station_name = "" OR start_station_name = ""
+
+DELETE FROM june
+WHERE end_station_name = "" OR start_station_name = ""
+
+DELETE FROM june
+WHERE end_station_name = "" OR start_station_name = ""
+
+DELETE FROM july
+WHERE end_station_name = "" OR start_station_name = ""
+
+DELETE FROM august
+WHERE end_station_name = "" OR start_station_name = ""
+
+DELETE FROM september
+WHERE end_station_name = "" OR start_station_name = ""
+
+DELETE FROM october
+WHERE end_station_name = "" OR start_station_name = ""
+
+DELETE FROM november
+WHERE end_station_name = "" OR start_station_name = ""
+
+DELETE FROM december
+WHERE end_station_name = "" OR start_station_name = ""
+
+--Using UNION to union all 12 files into 4 files having 3 months each
+WITH q1  AS(
+SELECT *
+FROM `202101-divvy-tripdata` jan
+    
+UNION ALL
+
+SELECT *
+from february
+    
+UNION ALL
+
+SELECT *
+from march
+)
+SELECT *,EXTRACT(MINUTE FROM TIMEDIFF(ended_at, started_at)) as trip_duration, --EXTRACTING ALL DATA ALONG WITH TRIP DURATION AND DAY OF THE WEEK
+    DAYNAME(started_at) as day_of_week
+from q1
+HAVING ABS(trip_duration)
+
+
+WITH q2 AS(
+
+SELECT *
+from april
+    
+UNION ALL
+
+SELECT *
+from may
+
+UNION ALL
+
+SELECT *
+from june
+)
+SELECT *,EXTRACT(MINUTE FROM TIMEDIFF(ended_at, started_at)) as trip_duration, --EXTRACTING ALL DATA ALONG WITH TRIP DURATION AND DAY OF THE WEEK
+    DAYNAME(started_at) as day_of_week
+from q2
+HAVING ABS(trip_duration)
+
+WITH q3 AS(
+SELECT *
+from july
+
+UNION ALL
+
+SELECT *
+from august
+    
+UNION ALL
+
+SELECT *
+from september
+)
+SELECT *,EXTRACT(MINUTE FROM TIMEDIFF(ended_at, started_at)) as trip_duration, --EXTRACTING ALL DATA ALONG WITH TRIP DURATION AND DAY OF THE WEEK
+    DAYNAME(started_at) as day_of_week
+from q1
+HAVING ABS(trip_duration)
+
+WITH q4 AS(
+SELECT *
+from
+october 
+
+UNION ALL
+
+SELECT *
+from november
+
+UNION ALL
+
+SELECT *
+from december
+)
+SELECT *,EXTRACT(MINUTE FROM TIMEDIFF(ended_at, started_at)) as trip_duration, --EXTRACTING ALL DATA ALONG WITH TRIP DURATION AND DAY OF THE WEEK
+    DAYNAME(started_at) as day_of_week
+from q4
+HAVING ABS(trip_duration)
